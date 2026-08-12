@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Менеджер Задач</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; padding: 40px 20px; display: flex; justify-content: center; }
+        .container { max-width: 700px; width: 100%; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .time-badge { font-size: 0.85rem; color: #94a3b8; background: #1e293b; padding: 6px 12px; border-radius: 20px; border: 1px solid #334155; }
+        .btn-add { background: #6366f1; color: white; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+        .btn-add:hover { background: #4f46e5; }
+        .task-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .task-card { background: #1e293b; border: 1px solid #334155; padding: 16px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .task-title { font-size: 1.1rem; color: #f1f5f9; text-decoration: none; font-weight: 500; }
+        .task-actions { display: flex; gap: 8px; }
+        .btn { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: 0.2s; }
+        .btn-view { background: #334155; color: #e2e8f0; }
+        .btn-view:hover { background: #475569; }
+        .btn-edit { background: #0284c7; color: white; }
+        .btn-edit:hover { background: #0369a1; }
+        .btn-delete { background: #e11d48; color: white; }
+        .btn-delete:hover { background: #be123c; }
+        .empty-state { text-align: center; color: #64748b; padding: 40px; background: #1e293b; border-radius: 12px; border: 1px dashed #334155; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📌 Мои Заметки</h1>
+                <span class="time-badge">Сегодня: {% now "Y-m-d H:i" %}</span>
+            </div>
+            <a href="{% url 'create_task' %}" class="btn-add">+ Новая заметка</a>
+        </div>
+
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="task-card">
+                    <a href="{% url 'view_task' task.id %}" class="task-title">{{ task.title|capfirst }}</a>
+                    <div class="task-actions">
+                        <a href="{% url 'view_task' task.id %}" class="btn btn-view">Открыть</a>
+                        <a href="{% url 'edit_task' task.id %}" class="btn btn-edit">Изменить</a>
+                        <a href="{% url 'delete_task' task.id %}" class="btn btn-delete">Удалить</a>
+                    </div>
+                </li>
+            {% empty %}
+                <div class="empty-state">
+                    <p>Задач пока нет. Создайте первую!</p>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
